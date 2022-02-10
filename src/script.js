@@ -35,13 +35,15 @@ var products = [{
     "os": "Windows"
 }];
 
-var filter_OS = [];
-var filter_Brand = [];
+var filter_OS = new Set();
+var filter_Brand = new Set();
+var  productDisplay = [];
+var productDisplay1 = [];
 for(var i = 0; i < products.length; i++){
-    filter_OS.push(products[i].os);
-    filter_Brand.push(products[i].brand);
-    console.log(filter_OS);
-    console.log(filter_Brand);
+    filter_OS.add(products[i].os);
+    filter_Brand.add(products[i].brand);
+    // console.log(filter_OS);
+    // console.log(filter_Brand);
 }
 
 
@@ -66,12 +68,12 @@ $(document).ready(function(){
 
     
 for(var i =0; i<products.length;i++){
-            text +='<tr class="row" id = '+products[i].id+'>\
-             <td class="row">' + products[i].id + '</td>\
-             <td class="row">' + products[i].name + '</td>\
-             <td class="row">' + products[i].brand + '</td>\
-             <td class="row">' + products[i].os + '</td>\
-             <td class="row"> <a href="#" id = "hide1" data-r_id='+products[i].id +' > X </a> </td>\
+            text +='<tr  id = '+products[i].id+'>\
+             <td data-type = '+products[i].id+' class="row">' + products[i].id + '</td>\
+             <td data-type = '+products[i].name+' class="row">' + products[i].name + '</td>\
+             <td data-type = '+products[i].brand+' class="row">' + products[i].brand + '</td>\
+             <td data-type = '+products[i].os+' class="row">' + products[i].os + '</td>\
+             <td data-type = '+""+' class="row"> <a href="#" id = "hide1" data-r_id='+products[i].id +' > X </a> </td>\
          </tr>'
         }
         text+= '</table>'
@@ -109,10 +111,39 @@ for(var i =0; i<products.length;i++){
     $('table').before(brandDrop);
 
     $('#os').change(function(){
-        var filterValue = $(this).val();
-        var row = $('.row');
+        productDisplay = []
+        var filterOS = $(this).val();
+        for(var i = 0; i < products.length; i++){
+            if(products[i].os == filterOS){
+                productDisplay.push(products[i]);
+
+            }else if(filterOS == 'none'){
+                productDisplay = products;
+            }
+        }
+        console.log(productDisplay);
+
+        $('#brand').change(function(filterOS,productDisplay){
+            productDisplay1 = []
+            var filterBrand = $(this).val();
+            for(var i = 0; i < productDisplay.length; i++){
+                if(productDisplay[i].brand == filterBrand){
+                    productDisplay1.push(productDisplay[i]);
+    
+                }else if(filterBrand == 'none'){
+                    productDisplay1 = productDisplay;
+                }else if(filterOS == 'none'){
+                    productDisplay1 = products;
+                }
+            }
+            console.log(productDisplay1);
+    
+            
+        });
+
         
     });
+    
 
 
         
